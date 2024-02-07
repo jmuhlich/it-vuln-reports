@@ -1,6 +1,12 @@
 import pandas as pd
+import re
+import sys
 
-df = pd.read_excel("report.xlsx")
+if len(sys.argv) != 2:
+    print(f"Usage: tenable_convert.py input.xlsx")
+    sys.exit(1)
+
+df = pd.read_excel(sys.argv[1])
 g = pd.concat(
     [
         df.fillna(""),
@@ -22,4 +28,4 @@ out = (
     .rename("Plugins")
     .reset_index()
 )
-out.to_excel("output.xlsx", index=False)
+print(out.to_csv(index=False))
