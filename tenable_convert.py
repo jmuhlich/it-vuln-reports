@@ -15,12 +15,12 @@ g = pd.merge(
     left_index=True,
     right_on='Index',
 ).groupby(["IP Address", "MAC Address", "DNS Name", "NetBIOS Name", "Path"])[
-    ["Plugin", "Plugin Name", "Family", "Severity"]
+    ["Plugin", "Plugin Name", "Severity"]
 ]
 out = (
     g.apply(
         lambda x: "\n".join(
-            f"{r.Plugin} : {r._2}; Family={r.Family}; Severity={r.Severity}"
+            f"{r.Plugin} : {r._2}; Severity={r.Severity}"
             for r in x.itertuples()
         )
     )
