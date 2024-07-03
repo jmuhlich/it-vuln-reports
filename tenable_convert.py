@@ -7,14 +7,13 @@ if len(sys.argv) != 2:
     sys.exit(1)
 
 df = pd.read_excel(sys.argv[1])
-g = pd.concat(
-    [
-        df.fillna(""),
-        df["Plugin Output"]
-        .str.extractall(r"Path\s*: (?P<Path>.*)$", re.MULTILINE)
-        .reset_index(level="match"),
-    ],
-    axis="columns",
+g = pd.merge(
+    df.fillna(''),
+    df["Plugin Output"]
+    .str.extractall(r"Path\s*: (?P<Path>.*)$", re.MULTILINE)
+    .reset_index(names=['Index', 'Match']),
+    left_index=True,
+    right_on='Index',
 ).groupby(["IP Address", "MAC Address", "DNS Name", "NetBIOS Name", "Path"])[
     ["Plugin", "Plugin Name", "Family", "Severity"]
 ]
